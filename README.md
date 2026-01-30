@@ -11,7 +11,7 @@ The goal of the project is to combine data analysis, visual storytelling, and in
 ## Live Demo
 If deployed, add the link here:
 
----
+--
 
 ## Key Features
 - Interactive, scroll-based narrative with clearly defined analytical chapters
@@ -24,7 +24,7 @@ If deployed, add the link here:
 - Dark and light mode toggle for accessibility
 - Reset Filter functionality to restore all visualizations to their default state
 
----
+--
 
 ## Application Structure
 The visualization is organized into five sequential chapters:
@@ -45,7 +45,7 @@ The visualization is organized into five sequential chapters:
    - Scatter plot analyzing the relationship between EV stock and charging infrastructure across U.S. states  
    - Parallel Coordinates Plot enabling multivariate comparison of countries across EV stock, sales, market share, and transport-related CO₂ emissions
 
----
+--
 
 ## Technologies Used
 - JavaScript (ES6)
@@ -53,7 +53,7 @@ The visualization is organized into five sequential chapters:
 - HTML5 and CSS3
 - VS Code Live Server
 
----
+--
 
 ## Data Sources
 The project uses publicly available datasets compiled and cleaned for visualization purposes:
@@ -64,7 +64,7 @@ The project uses publicly available datasets compiled and cleaned for visualizat
 
 Processed CSV files are stored locally and loaded dynamically by the application.
 
----
+--
 
 ## How to Run Locally
 1. Clone the repository
@@ -74,13 +74,13 @@ Processed CSV files are stored locally and loaded dynamically by the application
 - Select "Open with Live Server"
 4. The visualization will open in your browser.
 
----
+--
 
 ## Recent Improvements
 - Implemented smooth, header-aware navigation that correctly scrolls to each section and highlights the active chapter.
 - Added a functional Reset Filter control that restores all visualizations to their default state by resetting sliders, clearing highlights, and re-rendering charts while preserving user preferences such as theme mode.
 
----
+--
 
 ## Learning Outcomes
 - Designed and implemented complex interactive visualizations using D3.js
@@ -89,13 +89,13 @@ Processed CSV files are stored locally and loaded dynamically by the application
 - Handled responsive layouts and browser resize behavior
 - Built user-friendly controls for filtering and resetting data-driven interactions
 
----
+--
 
 ## Team
 - Mrudula Eluri
 - Vaishnavi Bhairishetty 
 
----
+--
 
 ## Notes for Reviewers
 This project emphasizes clarity, interaction design, and analytical reasoning over raw model performance. It is intended to demonstrate skills in data visualization, front-end data handling, and effective communication of insights through interactive graphics.
