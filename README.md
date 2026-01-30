@@ -8,7 +8,7 @@ The goal of the project is to combine data analysis, visual storytelling, and in
 
 
 ## Live Demo
-If deployed, add the link here:
+
 
 
 ## Key Features
@@ -28,16 +28,16 @@ If deployed, add the link here:
 The visualization is organized into five sequential chapters:
 
 1. Introduction  
-   Context-setting narrative describing the global EV transition and analytical framing.
+   - Context-setting narrative describing the global EV transition and analytical framing.
 
 2. Global Sales Volume  
-   Bar chart showing annual EV sales aggregated by region, with a year slider to observe growth trends.
+   - Bar chart showing annual EV sales aggregated by region, with a year slider to observe growth trends.
 
 3. Accumulation on the Road (Stock)  
-   Line chart illustrating cumulative EV stock over time by country, highlighting long-term adoption trajectories.
+   - Line chart illustrating cumulative EV stock over time by country, highlighting long-term adoption trajectories.
 
 4. Adoption Rates (Market Share Heatmap)  
-   Heatmap visualizing the percentage of new vehicle sales that are electric, emphasizing intensity of adoption across countries and years.
+   - Heatmap visualizing the percentage of new vehicle sales that are electric, emphasizing intensity of adoption across countries and years.
 
 5. Infrastructure and Global Profiles  
    - Scatter plot analyzing the relationship between EV stock and charging infrastructure across U.S. states  
@@ -66,8 +66,8 @@ Processed CSV files are stored locally and loaded dynamically by the application
 1. Clone the repository
 2. Open the project folder in VS Code.
 3. Run the application using Live Server:
-- Right-click `index.html`
-- Select "Open with Live Server"
+   - Right-click `index.html`
+   - Select "Open with Live Server"
 4. The visualization will open in your browser.
 
 
