@@ -445,6 +445,100 @@ function renderPCP() {
         .range([height, 0]);
   });
 
+// ---- Improved Reset filters button behavior (fires slider input events) ---- //
+(function() {
+  try {
+    const resetBtn = document.getElementById('reset-pcp');
+    console.log('[RESET] init: resetBtn=', resetBtn);
+    if (!resetBtn) {
+      console.warn('[RESET] Button not found (#reset-pcp).');
+      return;
+    }
+
+    function triggerInput(el) {
+      if (!el) return;
+      // update label if present
+      const labelId = el.id === 'sales-year-slider' ? 'sales-year-label' :
+                      el.id === 'scatter-year-slider' ? 'scatter-year-label' : null;
+      if (labelId) {
+        const lbl = document.getElementById(labelId);
+        if (lbl) lbl.textContent = el.value;
+      }
+      // dispatch an input event so existing listeners run
+      const evt = new Event('input', { bubbles: true, cancelable: true });
+      el.dispatchEvent(evt);
+    }
+
+    function resetFilters() {
+      console.log('[RESET] resetFilters() called');
+
+      // 1) Reset sliders to max & trigger their input handlers
+      try {
+        if (state.years && state.years.length) {
+          const maxYear = d3.max(state.years);
+          const salesSlider = document.getElementById('sales-year-slider');
+          if (salesSlider) {
+            salesSlider.value = maxYear;
+            // update label & fire input to run its callback
+            triggerInput(salesSlider);
+          } else {
+            console.warn('[RESET] sales slider not found');
+          }
+        } else {
+          console.warn('[RESET] state.years empty');
+        }
+
+        if (state.usYears && state.usYears.length) {
+          const maxUSYear = d3.max(state.usYears);
+          const scatterSlider = document.getElementById('scatter-year-slider');
+          if (scatterSlider) {
+            scatterSlider.value = maxUSYear;
+            triggerInput(scatterSlider);
+          } else {
+            console.warn('[RESET] scatter slider not found');
+          }
+        } else {
+          console.warn('[RESET] state.usYears empty');
+        }
+      } catch (e) {
+        console.warn('[RESET] slider reset error', e);
+      }
+
+      // 2) Remove any visual selection/highlight classes and inline styles
+      try {
+        document.querySelectorAll('.highlighted, .faded').forEach(el => {
+          el.classList.remove('highlighted', 'faded');
+        });
+        document.querySelectorAll('svg .country-line, svg circle, svg path').forEach(el => {
+          el.style.opacity = '';
+          el.style.strokeWidth = '';
+          el.style.stroke = '';
+          el.style.fill = '';
+        });
+      } catch (e) { console.warn('[RESET] clearing styles error', e); }
+
+      // 3) Clear tooltip
+      try { if (typeof tooltip !== 'undefined') tooltip.style('opacity', 0).html(''); } catch (e) { console.warn('[RESET] tooltip clear error', e); }
+
+      // 4) Re-render charts as a safety (some charts update via their own slider callbacks)
+      try { renderAllCharts(); } catch (e) { console.error('[RESET] renderAllCharts error', e); }
+
+      console.log('[RESET] done');
+    }
+
+    // attach listener and also expose debug command
+    resetBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      resetFilters();
+    });
+    window.__resetFilters = resetFilters;
+    console.log('[RESET] handler attached and __resetFilters available in console');
+  } catch (err) {
+    console.error('[RESET] initialization failed', err);
+  }
+})();
+
+
   const x = d3.scalePoint().domain(dimensions).range([0, width]).padding(0.5);
   const line = d3.line().defined(d => !isNaN(d[1])).x(d => x(d[0])).y(d => y[d[0]](d[1]));
 
@@ -501,3 +595,86 @@ function renderPCP() {
     .style("font-size", "13px")
     .text("Hover over lines to isolate countries.");
 }
+// ==== Smooth offset scrolling + active link highlighting for .top-nav anchors ==== //
+(function() {
+  // Select anchors inside your top nav
+  const navLinks = document.querySelectorAll('.top-nav a[href^="#"]');
+  if (!navLinks || navLinks.length === 0) return;
+
+  // Header selector from your HTML
+  const headerEl = document.querySelector('.site-header');
+  function headerHeight() {
+    // compute current header height (accounts for responsive changes)
+    return headerEl ? headerEl.getBoundingClientRect().height : 0;
+  }
+
+  // Scroll to target with header offset and small padding
+  function scrollToTarget(hash) {
+    if (!hash) return;
+    const id = hash.replace('#', '');
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    // compute top position with offset
+    const rect = target.getBoundingClientRect();
+    const offset = headerHeight() + 12; // 12px extra padding
+    const top = window.pageYOffset + rect.top - offset;
+
+    window.scrollTo({
+      top: Math.max(0, Math.floor(top)),
+      behavior: 'smooth'
+    });
+
+    // update url hash without immediate jump
+    history.pushState(null, '', '#' + id);
+  }
+
+  // Click handler for nav links
+  navLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        e.preventDefault();
+        scrollToTarget(href);
+      }
+    });
+  });
+
+  // --- Active link highlighting on scroll ---
+  // Build map of section top positions for a fast check
+  const sections = Array.from(navLinks)
+    .map(a => document.getElementById(a.getAttribute('href').slice(1)))
+    .filter(Boolean);
+
+  function getCurrentSectionIndex() {
+    const offset = headerHeight() + 20; // slightly larger threshold
+    const pos = window.pageYOffset + offset;
+    for (let i = sections.length - 1; i >= 0; i--) {
+      const s = sections[i];
+      if (s.offsetTop <= pos) return i;
+    }
+    return 0;
+  }
+
+  // Debounced scroll handler
+  let scrollTimer = null;
+  function onScroll() {
+    if (scrollTimer) clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => {
+      const idx = getCurrentSectionIndex();
+      navLinks.forEach((link, i) => {
+        if (i === idx) link.classList.add('active');
+        else link.classList.remove('active');
+      });
+    }, 100);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // If page opened with a hash, scroll to it after small delay (header stable)
+  if (window.location.hash) {
+    setTimeout(() => scrollToTarget(window.location.hash), 120);
+  }
+
+  // Trigger initial active link update
+  onScroll();
+})();
