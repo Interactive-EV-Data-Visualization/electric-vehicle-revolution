@@ -6,7 +6,7 @@ This project is an interactive, narrative-driven data visualization that explore
 
 The goal of the project is to combine data analysis, visual storytelling, and interactive design to help users understand how and where electric vehicles are being adopted worldwide, and what factors enable or constrain that growth.
 
----
+--
 
 ## Live Demo
 If deployed, add the link here:
