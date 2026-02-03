@@ -8,8 +8,7 @@ The goal of the project is to combine data analysis, visual storytelling, and in
 
 
 ## Live Demo
-(Optional)  
-Add the deployment link here if hosted using GitHub Pages or another platform.
+https://interactive-ev-data-visualization.github.io/electric-vehicle-revolution/ 
 
 
 ## Key Features
