@@ -86,8 +86,8 @@ Processed CSV files are stored locally and loaded dynamically by the application
 
 ## Team
 - Mrudula Eluri
-- Vaishnavi Bhairishetty 
-
+- Vaishnavi Bhairishetty
+- Tanmai Potla
 
 ## Notes for Reviewers
 This project emphasizes clarity, interaction design, and analytical reasoning over raw model performance. It is intended to demonstrate skills in data visualization, front-end data handling, and effective communication of insights through interactive graphics.
