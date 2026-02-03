@@ -25,7 +25,7 @@ https://interactive-ev-data-visualization.github.io/electric-vehicle-revolution/
 
 
 ## Application Structure
-- The visualization is organized into five sequential chapters:
+The visualization is organized into five sequential chapters:
 
 ### 1. Introduction
 - Context-setting narrative describing the global EV transition and analytical framing.
